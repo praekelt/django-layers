@@ -15,6 +15,8 @@ as well.  You can override `foo.html` for desktop browsers.
 `INSTALLED_APPS` else template override won't work.
 
 ## Example
+Note: there is a working example in the `example` subdirectory.
+
 We have sites example.com, basic.example.com and smart.example.com. Each
 of the sites have their own `settings.py`, thus different Django processes.
 
