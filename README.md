@@ -1,6 +1,7 @@
 # Django Layers
 ![Travis](https://travis-ci.org/hedleyroos/django-layers.svg?branch=develop)
 
+----
 `django-layers` makes it possible to serve a set of templates and static
 resources as defined in `settings.py`. This means you can serve different HTML,
 Javascript and CSS to eg. basic mobile devices, smart phones and desktop
@@ -92,3 +93,4 @@ only.
 ## Collectstatic
 Collectstatic remains unaffected. The collector delegates to finders, so all layer
 aware resources end up with partial paths under the `STATIC_ROOT` directory.
+
