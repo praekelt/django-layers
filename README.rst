@@ -122,8 +122,8 @@ Collectstatic remains unaffected. The collector delegates to finders, so
 all layer aware resources end up with partial paths under the
 ``STATIC_ROOT`` directory. ## Authors \* Hedley Roos ## Changelog
 
-next
-~~~~
+0.1
+~~~
 
 #. Initial release.
 
