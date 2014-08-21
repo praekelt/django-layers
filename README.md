@@ -87,6 +87,6 @@ The normal template resolution rules apply. Creating eg.
 `templates/web/registration/login.html` will override the login page for web
 only.
 
-## Collecstatic
+## Collectstatic
 Collectstatic remains unaffected. The collector delegates to finders, so all layer
 aware resources end up with partial paths under the `STATIC_ROOT` directory.
