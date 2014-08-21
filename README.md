@@ -44,6 +44,28 @@ We define an "inheritance" hierarchy.
 * Basic settings has `LAYERS = {'layers': ['basic']}`.
 * Smart settings has `LAYERS = {'layers': ['basic', 'smart']}`.
 
+All settings require loaders and finders to be set. The order is important.
+
+    INSTALLED_APPS = (
+        'myapp',
+        'layers',
+        ...
+    )
+
+    TEMPLATE_LOADERS = (
+        'layers.loaders.filesystem.Loader',
+        'django.template.loaders.filesystem.Loader',
+        'layers.loaders.app_directories.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )
+
+    STATICFILES_FINDERS = (
+        'layers.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'layers.finders.AppDirectoriesFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    )
+
 #### Template results
 * http://example.com/foo yields (1).
 * http://example.com/bar yields (4).
@@ -64,3 +86,7 @@ We define an "inheritance" hierarchy.
 The normal template resolution rules apply. Creating eg.
 `templates/web/registration/login.html` will override the login page for web
 only.
+
+## Collecstatic
+Collectstatic remains unaffected. The collector delegates to finders, so all layer
+aware resources end up with partial paths under the `STATIC_ROOT` directory.
