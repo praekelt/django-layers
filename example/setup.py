@@ -15,7 +15,7 @@ setup(
     ],
     install_requires = [
         'Django',
-        'django-layers',
+        'django-layers-hr',
     ],
     include_package_data=True,
     classifiers=[
