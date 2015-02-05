@@ -7,6 +7,7 @@ from django.test.utils import override_settings
 from django.templatetags.static import static
 from django.contrib.staticfiles import finders
 from django.views.static import serve
+from django.core import management
 from django.conf import settings
 
 BASIC_LAYERS = {'layers': ['basic']}
@@ -158,3 +159,115 @@ class TestCase(BaseTestCase):
     def test_app_bar_static_web(self):
         content = self.get_rendered_static('app_bar.css')
         self.assertEqual(content, 'app bar web')
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_fs_plain_override_me_static_basic(self):
+        # Basic does not override the file defined unaware of layers
+        content = self.get_rendered_static('fs_plain_override_me.css')
+        self.assertEqual(content, 'fs plain override me')
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_fs_plain_override_me_static_web(self):
+        # Web does override the file defined unaware of layers
+        content = self.get_rendered_static('fs_plain_override_me.css')
+        self.assertEqual(content, 'fs plain override me web')
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_fs_basic_override_me_static_basic(self):
+        # Basic defines the file first
+        content = self.get_rendered_static('fs_basic_override_me.css')
+        self.assertEqual(content, 'fs basic override me')
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_fs_basic_override_me_static_web(self):
+        # Web does override the file defined in basic
+        content = self.get_rendered_static('fs_basic_override_me.css')
+        self.assertEqual(content, 'fs basic override me web')
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_fs_plain_override_me_template_basic(self):
+        # Basic does not override the file defined unaware of layers
+        content = self.get_rendered_template('fs_plain_override_me.html')
+        self.assertEqual(content, 'fs plain override me')
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_fs_plain_override_me_template_web(self):
+        # Web does override the file defined unaware of layers
+        content = self.get_rendered_template('fs_plain_override_me.html')
+        self.assertEqual(content, 'fs plain override me web')
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_fs_basic_override_me_template_basic(self):
+        # Basic defines the file first
+        content = self.get_rendered_template('fs_basic_override_me.html')
+        self.assertEqual(content, 'fs basic override me')
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_fs_basic_override_me_template_web(self):
+        # Web does override the file defined in basic
+        content = self.get_rendered_template('fs_basic_override_me.html')
+        self.assertEqual(content, 'fs basic override me web')
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_app_plain_override_me_template_basic(self):
+        # Basic does not override the file defined unaware of layers
+        content = self.get_rendered_template('app_plain_override_me.html')
+        self.assertEqual(content, 'app plain override me')
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_app_plain_override_me_template_web(self):
+        # Web does override the file defined unaware of layers
+        content = self.get_rendered_template('app_plain_override_me.html')
+        self.assertEqual(content, 'app plain override me web')
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_app_basic_override_me_template_basic(self):
+        # Basic defines the file first
+        content = self.get_rendered_template('app_basic_override_me.html')
+        self.assertEqual(content, 'app basic override me')
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_app_basic_override_me_template_web(self):
+        # Web does override the file defined in basic
+        content = self.get_rendered_template('app_basic_override_me.html')
+        self.assertEqual(content, 'app basic override me web')
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_collectstatic_basic(self):
+        management.call_command('collectstatic', interactive=False)
+        for name, exists, content in (
+            (("basic", "app_bar.css"), True, "app bar basic"),
+            (("basic", "app_foo.css"), True, "app foo basic"),
+            (("basic", "app_plain.css"), True, "app plain"),
+            (("basic", "fs_bar.css"), True, "fs bar basic"),
+            (("basic", "fs_basic.css"), True, "fs basic"),
+            (("basic", "fs_basic_override_me.css"), True, "fs basic override me"),
+            (("basic", "fs_foo.css"), True, "fs foo basic"),
+            (("basic", "fs_plain.css"), True, "fs plain"),
+            (("basic", "fs_plain_override_me.css"), True, "fs plain override me"),
+            (("basic", "fs_web.css"), False, "fs web"),
+        ):
+            pth = os.path.join(settings.STATIC_ROOT, *name)
+            self.assertEqual(os.path.exists(pth), exists)
+            if exists:
+                self.assertEqual(open(pth).read().strip(), content)
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_collectstatic_web(self):
+        management.call_command('collectstatic', interactive=False)
+        for name, exists, content in (
+            (("web", "app_bar.css"), True, "app bar web"),
+            (("web", "app_foo.css"), True, "app foo basic"),
+            (("web", "app_plain.css"), True, "app plain"),
+            (("web", "fs_bar.css"), True, "fs bar web"),
+            (("web", "fs_basic.css"), True, "fs basic"),
+            (("web", "fs_basic_override_me.css"), True, "fs basic override me web"),
+            (("web", "fs_foo.css"), True, "fs foo basic"),
+            (("web", "fs_plain.css"), True, "fs plain"),
+            (("web", "fs_plain_override_me.css"), True, "fs plain override me web"),
+            (("web", "fs_web.css"), True, "fs web"),
+        ):
+            pth = os.path.join(settings.STATIC_ROOT, *name)
+            self.assertEqual(os.path.exists(pth), exists)
+            if exists:
+                self.assertEqual(open(pth).read().strip(), content)

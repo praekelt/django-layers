@@ -6,6 +6,9 @@ Django Layers
    :alt: Travis
 
    Travis
+
+--------------
+
 ``django-layers`` makes it possible to serve a set of templates and
 static resources as defined in ``settings.py``. This means you can serve
 different HTML, Javascript and CSS to eg. basic mobile devices, smart
@@ -18,7 +21,7 @@ Installation
 ------------
 
 1. Install or add ``django-layers`` to your Python path.
-2. Add ``layers`` to your ``INSTALLED_APPS`` setting.
+2. Add ``layers`` after ``django.contrib.static`` to your ``INSTALLED_APPS`` setting.
 3. Ensure the app that you will be creating layers for appears first in
    ``INSTALLED_APPS`` else template override won't work.
 
@@ -120,15 +123,23 @@ Collectstatic
 
 Collectstatic remains unaffected. The collector delegates to finders, so
 all layer aware resources end up with partial paths under the
-``STATIC_ROOT`` directory. ## Authors \* Hedley Roos ## Changelog
+``STATIC_ROOT`` directory.
+
+Authors
+-------
+
+-  Hedley Roos
+
+Changelog
+---------
 
 0.2
-~~~
+^^^
 
 1. Inevitable package rename.
 
 0.1
-~~~
+^^^
 
 1. Initial release.
 
