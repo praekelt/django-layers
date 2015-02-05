@@ -36,4 +36,7 @@ STATICFILES_FINDERS = (
 
 STATICFILES_DIRS = (os.path.realpath(os.path.dirname(__file__)) + '/layers/tests/static/',)
 
+STATIC_URL = '/'
+STATIC_ROOT = '/tmp/django-layers/static'
+
 LAYERS = {'layers': ['basic']}

@@ -12,7 +12,7 @@ setup(
     url='http://github.com/hedleyroos/django-layers',
     packages = find_packages(),
     install_requires = [
-        'Django',
+        'Django<1.7',
     ],
     include_package_data=True,
     tests_require=[
