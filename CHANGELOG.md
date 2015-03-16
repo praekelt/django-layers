@@ -1,6 +1,6 @@
 ## Changelog
 
-#### next
+#### 0.4
 1. Remove redundant collectstatic management command.
 
 #### 0.3
