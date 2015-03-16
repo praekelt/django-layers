@@ -1,5 +1,8 @@
 ## Changelog
 
+#### 0.4
+1. Remove redundant collectstatic management command.
+
 #### 0.3
 1. Expand tests.
 2. Fix bug where static file not defined in a layer could not be overwritten in a layer.
