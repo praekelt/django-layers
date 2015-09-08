@@ -21,7 +21,7 @@ Installation
 ------------
 
 1. Install or add ``django-layers`` to your Python path.
-2. Add ``layers`` to your ``INSTALLED_APPS`` setting.
+2. Add ``layers`` after ``django.contrib.static`` to your ``INSTALLED_APPS`` setting.
 3. Ensure the app that you will be creating layers for appears first in
    ``INSTALLED_APPS`` else template override won't work.
 

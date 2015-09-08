@@ -24,7 +24,8 @@ class FileSystemFinder(BaseFileSystemFinder):
                 if os.path.exists(pth) and (pth not in processed):
                     processed.append(pth)
                     new_locations.append(('', pth))
-        self.locations.extend(new_locations)
+        for location in reversed(new_locations):
+            self.locations.insert(0, location)
 
         for prefix, location in new_locations:
             filesystem_storage = FileSystemStorage(location=location)

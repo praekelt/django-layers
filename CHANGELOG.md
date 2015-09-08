@@ -3,6 +3,14 @@
 #### next
 1. Provide decorator `exclude_from_layers` so a view renders properly even if it can't render for a particular layer.
 
+#### 0.4
+1. Remove redundant collectstatic management command.
+
+#### 0.3
+1. Expand tests.
+2. Fix bug where static file not defined in a layer could not be overwritten in a layer.
+3. Provide a layer aware replacement for collectstatic.
+
 #### 0.2
 1. Inevitable package rename.
 
