@@ -37,3 +37,5 @@ STATICFILES_FINDERS = (
 STATICFILES_DIRS = (os.path.realpath(os.path.dirname(__file__)) + '/layers/tests/static/',)
 
 LAYERS = {'layers': ['basic']}
+
+ROOT_URLCONF = 'layers.tests.urls'

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="exclude-from-layers">
+    <div class="title">{% trans "Page not found" %}</div>
+    <p>{% blocktrans %}The page you are trying to view is not available for your device.{% endblocktrans %}</p>
+</div>
+{% endblock %}
