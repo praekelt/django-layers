@@ -1,5 +1,8 @@
 ## Changelog
 
+#### 0.5.1
+1. Rewrite decorator to be function based because it makes it easier to use in urls.py.
+
 #### 0.5
 1. Provide decorator `exclude_from_layers` so a view renders properly even if it can't render for a particular layer.
 
