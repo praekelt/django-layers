@@ -1,6 +1,6 @@
 ## Changelog
 
-#### next
+#### 0.5.1
 1. Rewrite decorator to be function based because it makes it easier to use in urls.py.
 
 #### 0.5
