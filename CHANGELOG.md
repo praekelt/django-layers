@@ -1,5 +1,8 @@
 ## Changelog
 
+#### 0.5
+1. Provide decorator `exclude_from_layers` so a view renders properly even if it can't render for a particular layer.
+
 #### 0.4
 1. Remove redundant collectstatic management command.
 

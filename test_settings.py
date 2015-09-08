@@ -14,6 +14,7 @@ DATABASES = {
 
 INSTALLED_APPS = [
     'django.contrib.sites',
+    'django.contrib.staticfiles',
     'layers'
 ]
 
@@ -40,3 +41,5 @@ STATIC_URL = '/'
 STATIC_ROOT = '/tmp/django-layers/static'
 
 LAYERS = {'layers': ['basic']}
+
+ROOT_URLCONF = 'layers.tests.urls'

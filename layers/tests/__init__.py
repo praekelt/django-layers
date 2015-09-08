@@ -7,7 +7,11 @@ from django.test.utils import override_settings
 from django.templatetags.static import static
 from django.contrib.staticfiles import finders
 from django.views.static import serve
+from django.core.urlresolvers import reverse
 from django.core import management
+from django.core.files.storage import default_storage
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.utils.functional import empty
 from django.conf import settings
 
 BASIC_LAYERS = {'layers': ['basic']}
@@ -232,42 +236,91 @@ class TestCase(BaseTestCase):
         content = self.get_rendered_template('app_basic_override_me.html')
         self.assertEqual(content, 'app basic override me web')
 
-    @override_settings(LAYERS=BASIC_LAYERS)
+    @override_settings(LAYERS=BASIC_LAYERS, STATIC_ROOT="/tmp/django-layers/static/basic")
     def test_collectstatic_basic(self):
+
+        # Re-initialize storage by dropping to low-level API
+        default_storage._wrapped = empty
+        staticfiles_storage._wrapped = empty
+
         management.call_command('collectstatic', interactive=False)
         for name, exists, content in (
-            (("basic", "app_bar.css"), True, "app bar basic"),
-            (("basic", "app_foo.css"), True, "app foo basic"),
-            (("basic", "app_plain.css"), True, "app plain"),
-            (("basic", "fs_bar.css"), True, "fs bar basic"),
-            (("basic", "fs_basic.css"), True, "fs basic"),
-            (("basic", "fs_basic_override_me.css"), True, "fs basic override me"),
-            (("basic", "fs_foo.css"), True, "fs foo basic"),
-            (("basic", "fs_plain.css"), True, "fs plain"),
-            (("basic", "fs_plain_override_me.css"), True, "fs plain override me"),
-            (("basic", "fs_web.css"), False, "fs web"),
+            (("app_bar.css",), True, "app bar basic"),
+            (("app_foo.css",), True, "app foo basic"),
+            (("app_plain.css",), True, "app plain"),
+            (("fs_bar.css",), True, "fs bar basic"),
+            (("fs_basic.css",), True, "fs basic"),
+            (("fs_basic_override_me.css",), True, "fs basic override me"),
+            (("fs_foo.css",), True, "fs foo basic"),
+            (("fs_plain.css",), True, "fs plain"),
+            (("fs_plain_override_me.css",), True, "fs plain override me"),
+            (("fs_web.css",), False, "fs web"),
         ):
             pth = os.path.join(settings.STATIC_ROOT, *name)
             self.assertEqual(os.path.exists(pth), exists)
             if exists:
                 self.assertEqual(open(pth).read().strip(), content)
 
-    @override_settings(LAYERS=WEB_LAYERS)
+    @override_settings(LAYERS=WEB_LAYERS, STATIC_ROOT="/tmp/django-layers/static/web")
     def test_collectstatic_web(self):
+
+        # Re-initialize storage by dropping to low-level API
+        default_storage._wrapped = empty
+        staticfiles_storage._wrapped = empty
+
         management.call_command('collectstatic', interactive=False)
         for name, exists, content in (
-            (("web", "app_bar.css"), True, "app bar web"),
-            (("web", "app_foo.css"), True, "app foo basic"),
-            (("web", "app_plain.css"), True, "app plain"),
-            (("web", "fs_bar.css"), True, "fs bar web"),
-            (("web", "fs_basic.css"), True, "fs basic"),
-            (("web", "fs_basic_override_me.css"), True, "fs basic override me web"),
-            (("web", "fs_foo.css"), True, "fs foo basic"),
-            (("web", "fs_plain.css"), True, "fs plain"),
-            (("web", "fs_plain_override_me.css"), True, "fs plain override me web"),
-            (("web", "fs_web.css"), True, "fs web"),
+            (("app_bar.css",), True, "app bar web"),
+            (("app_foo.css",), True, "app foo basic"),
+            (("app_plain.css",), True, "app plain"),
+            (("fs_bar.css",), True, "fs bar web"),
+            (("fs_basic.css",), True, "fs basic"),
+            (("fs_basic_override_me.css",), True, "fs basic override me web"),
+            (("fs_foo.css",), True, "fs foo basic"),
+            (("fs_plain.css",), True, "fs plain"),
+            (("fs_plain_override_me.css",), True, "fs plain override me web"),
+            (("fs_web.css",), True, "fs web"),
         ):
             pth = os.path.join(settings.STATIC_ROOT, *name)
             self.assertEqual(os.path.exists(pth), exists)
             if exists:
                 self.assertEqual(open(pth).read().strip(), content)
+
+
+class DecoratorTestCase(TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.request = RequestFactory()
+        cls.request.method = 'GET'
+        cls.request._path = '/'
+        cls.request.get_full_path = lambda: cls.request._path
+        cls.client = Client()
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_exclude_from_layers_basic(self):
+        url = reverse('normal-view')
+        response = self.client.get(url)
+        result = response.content
+        self.assertEqual(response.status_code, 200)
+        self.failUnless('This is a normal view' in result)
+
+        url = reverse('web-only-view')
+        response = self.client.get(url)
+        result = response.content
+        self.assertEqual(response.status_code, 200)
+        self.failUnless('is not available for your device' in result)
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_exclude_from_layers_web(self):
+        url = reverse('normal-view')
+        response = self.client.get(url)
+        result = response.content
+        self.assertEqual(response.status_code, 200)
+        self.failUnless('This is a normal view' in result)
+
+        url = reverse('web-only-view')
+        response = self.client.get(url)
+        result = response.content
+        self.assertEqual(response.status_code, 200)
+        self.failUnless('This view is only available for web' in result)

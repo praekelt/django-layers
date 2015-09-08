@@ -125,6 +125,21 @@ Collectstatic remains unaffected. The collector delegates to finders, so
 all layer aware resources end up with partial paths under the
 ``STATIC_ROOT`` directory.
 
+Decorators
+----------
+A user could follow a link that leads him to a layer that serves a broken page. For example a web site
+is served on www.site.com with an accompanying basic site m.site.com. Visiting www.site.com/flashy-dashboard
+with a basic device like a Samsung E250 will result in the user being redirected to m.site.com/flashy-dashboard.
+That page probably does not exist for basic devices because it can't render it well enough. In such a case a
+decorator ``exclude_from_layers`` is provided that renders a friendly page instead of a 404 or 500 error::
+
+    class WebOnlyView(TemplateView):
+        template_name = "layers/web_only_view.html"
+
+        @exclude_from_layers(layers=("basic",))
+        def get(self, *args, **kwargs):
+            return super(WebOnlyView, self).get(*args, **kwargs)
+
 Authors
 -------
 
