@@ -1,7 +1,5 @@
 import os
 
-from django.utils.importlib import import_module
-from django.utils.datastructures import SortedDict
 from django.core.files.storage import FileSystemStorage
 from django.contrib.staticfiles.finders import FileSystemFinder as \
     BaseFileSystemFinder, AppDirectoriesFinder as BaseAppDirectoriesFinder

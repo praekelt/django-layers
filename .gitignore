@@ -11,3 +11,6 @@ dist/
 *.egg
 ve/
 layers.db
+coverage.xml
+pep8.txt
+.tox
