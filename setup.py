@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="django-layers-hr",
-    version="0.5.1",
+    version="1.9",
     description="Serve different templates and static files for eg. mobi and web. Layers can be stacked to enable resource re-use.",
     long_description = open("README.rst", "r").read(),
     author="Hedley Roos",
