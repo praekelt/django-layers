@@ -1,6 +1,6 @@
 ## Changelog
 
-#### next
+#### 1.9
 1. Drop Django 1.6 compatibility. Django 1.9 is supported and tested.
 
 #### 0.5.1
