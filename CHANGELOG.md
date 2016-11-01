@@ -1,5 +1,8 @@
 ## Changelog
 
+#### 1.9
+1. Drop Django 1.6 compatibility. Django 1.9 is supported and tested.
+
 #### 0.5.1
 1. Rewrite decorator to be function based because it makes it easier to use in urls.py.
 

@@ -1,10 +1,9 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 from layers.tests import views
 
 
-urlpatterns = patterns(
-    "",
+urlpatterns = [
     url(
         r"^normal-view/$",
         views.NormalView.as_view(),
@@ -15,4 +14,4 @@ urlpatterns = patterns(
         views.WebOnlyView.as_view(),
         name="web-only-view"
     )
-)
+]
