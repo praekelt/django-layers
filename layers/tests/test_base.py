@@ -48,195 +48,208 @@ class BaseTestCase(TestCase):
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_plain_template_basic(self):
-        content = self.get_rendered_template("fs_plain.html")
+        content = self.get_rendered_template("tests/plain.html")
         self.assertEqual(content, "fs plain")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_plain_template_web(self):
-        content = self.get_rendered_template("fs_plain.html")
+        content = self.get_rendered_template("tests/plain.html")
         self.assertEqual(content, "fs plain")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_app_plain_template_basic(self):
-        content = self.get_rendered_template("app_plain.html")
+        content = self.get_rendered_template("someapp/plain.html")
         self.assertEqual(content, "app plain")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_app_plain_template_web(self):
-        content = self.get_rendered_template("app_plain.html")
+        content = self.get_rendered_template("someapp/plain.html")
         self.assertEqual(content, "app plain")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_foo_template_basic(self):
-        content = self.get_rendered_template("fs_foo.html")
+        content = self.get_rendered_template("tests/foo.html")
         self.assertEqual(content, "fs foo basic")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_foo_template_web(self):
-        content = self.get_rendered_template("fs_foo.html")
+        content = self.get_rendered_template("tests/foo.html")
         self.assertEqual(content, "fs foo basic")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_app_foo_template_basic(self):
-        content = self.get_rendered_template("app_foo.html")
+        content = self.get_rendered_template("someapp/foo.html")
         self.assertEqual(content, "app foo basic")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_app_foo_template_web(self):
-        content = self.get_rendered_template("app_foo.html")
+        content = self.get_rendered_template("someapp/foo.html")
         self.assertEqual(content, "app foo basic")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_bar_template_basic(self):
-        content = self.get_rendered_template("fs_bar.html")
+        content = self.get_rendered_template("tests/bar.html")
         self.assertEqual(content, "fs bar basic")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_bar_template_web(self):
-        content = self.get_rendered_template("fs_bar.html")
+        content = self.get_rendered_template("tests/bar.html")
         self.assertEqual(content, "fs bar web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_app_bar_template_basic(self):
-        content = self.get_rendered_template("app_bar.html")
+        content = self.get_rendered_template("someapp/bar.html")
         self.assertEqual(content, "app bar basic")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_app_bar_template_web(self):
-        content = self.get_rendered_template("app_bar.html")
+        content = self.get_rendered_template("someapp/bar.html")
         self.assertEqual(content, "app bar web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_plain_static_basic(self):
-        content = self.get_rendered_static("fs_plain.css")
+        content = self.get_rendered_static("tests/plain.css")
         self.assertEqual(content, "fs plain")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_plain_static_web(self):
-        content = self.get_rendered_static("fs_plain.css")
+        content = self.get_rendered_static("tests/plain.css")
         self.assertEqual(content, "fs plain")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_app_plain_static_basic(self):
-        content = self.get_rendered_static("app_plain.css")
+        content = self.get_rendered_static("someapp/plain.css")
         self.assertEqual(content, "app plain")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_app_plain_static_web(self):
-        content = self.get_rendered_static("app_plain.css")
+        content = self.get_rendered_static("someapp/plain.css")
         self.assertEqual(content, "app plain")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_foo_static_basic(self):
-        content = self.get_rendered_static("fs_foo.css")
+        content = self.get_rendered_static("tests/foo.css")
         self.assertEqual(content, "fs foo basic")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_foo_static_web(self):
-        content = self.get_rendered_static("fs_foo.css")
+        content = self.get_rendered_static("tests/foo.css")
         self.assertEqual(content, "fs foo basic")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_app_foo_static_basic(self):
-        content = self.get_rendered_static("app_foo.css")
+        content = self.get_rendered_static("someapp/foo.css")
         self.assertEqual(content, "app foo basic")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_app_foo_static_web(self):
-        content = self.get_rendered_static("app_foo.css")
+        content = self.get_rendered_static("someapp/foo.css")
         self.assertEqual(content, "app foo basic")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_bar_static_basic(self):
-        content = self.get_rendered_static("fs_bar.css")
+        content = self.get_rendered_static("tests/bar.css")
         self.assertEqual(content, "fs bar basic")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_bar_static_web(self):
-        content = self.get_rendered_static("fs_bar.css")
+        content = self.get_rendered_static("tests/bar.css")
         self.assertEqual(content, "fs bar web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_app_bar_static_basic(self):
-        content = self.get_rendered_static("app_bar.css")
+        content = self.get_rendered_static("someapp/bar.css")
         self.assertEqual(content, "app bar basic")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_app_bar_static_web(self):
-        content = self.get_rendered_static("app_bar.css")
+        content = self.get_rendered_static("someapp/bar.css")
         self.assertEqual(content, "app bar web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_plain_override_me_static_basic(self):
         # Basic does not override the file defined unaware of layers
-        content = self.get_rendered_static("fs_plain_override_me.css")
+        content = self.get_rendered_static("tests/plain_override_me.css")
         self.assertEqual(content, "fs plain override me")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_plain_override_me_static_web(self):
         # Web does override the file defined unaware of layers
-        content = self.get_rendered_static("fs_plain_override_me.css")
+        content = self.get_rendered_static("tests/plain_override_me.css")
         self.assertEqual(content, "fs plain override me web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_basic_override_me_static_basic(self):
         # Basic defines the file first
-        content = self.get_rendered_static("fs_basic_override_me.css")
+        content = self.get_rendered_static("tests/basic_override_me.css")
         self.assertEqual(content, "fs basic override me")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_basic_override_me_static_web(self):
         # Web does override the file defined in basic
-        content = self.get_rendered_static("fs_basic_override_me.css")
+        content = self.get_rendered_static("tests/basic_override_me.css")
         self.assertEqual(content, "fs basic override me web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_plain_override_me_template_basic(self):
         # Basic does not override the file defined unaware of layers
-        content = self.get_rendered_template("fs_plain_override_me.html")
+        content = self.get_rendered_template("tests/plain_override_me.html")
         self.assertEqual(content, "fs plain override me")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_plain_override_me_template_web(self):
         # Web does override the file defined unaware of layers
-        content = self.get_rendered_template("fs_plain_override_me.html")
+        content = self.get_rendered_template("tests/plain_override_me.html")
         self.assertEqual(content, "fs plain override me web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_fs_basic_override_me_template_basic(self):
         # Basic defines the file first
-        content = self.get_rendered_template("fs_basic_override_me.html")
+        content = self.get_rendered_template("tests/basic_override_me.html")
         self.assertEqual(content, "fs basic override me")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_fs_basic_override_me_template_web(self):
         # Web does override the file defined in basic
-        content = self.get_rendered_template("fs_basic_override_me.html")
+        content = self.get_rendered_template("tests/basic_override_me.html")
         self.assertEqual(content, "fs basic override me web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_app_plain_override_me_template_basic(self):
         # Basic does not override the file defined unaware of layers
-        content = self.get_rendered_template("app_plain_override_me.html")
+        content = self.get_rendered_template("someapp/plain_override_me.html")
         self.assertEqual(content, "app plain override me")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_app_plain_override_me_template_web(self):
         # Web does override the file defined unaware of layers
-        content = self.get_rendered_template("app_plain_override_me.html")
+        content = self.get_rendered_template("someapp/plain_override_me.html")
         self.assertEqual(content, "app plain override me web")
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_app_basic_override_me_template_basic(self):
         # Basic defines the file first
-        content = self.get_rendered_template("app_basic_override_me.html")
+        content = self.get_rendered_template("someapp/basic_override_me.html")
         self.assertEqual(content, "app basic override me")
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_app_basic_override_me_template_web(self):
         # Web does override the file defined in basic
-        content = self.get_rendered_template("app_basic_override_me.html")
+        content = self.get_rendered_template("someapp/basic_override_me.html")
         self.assertEqual(content, "app basic override me web")
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_app_basic_override_me_in_another_app_template_basic(self):
+        # Basic defines the file first
+        content = self.get_rendered_template("someapp/basic_override_me_in_another_app.html")
+        self.assertEqual(content, "app basic override me in another app")
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_app_basic_override_me_in_another_app_template_web(self):
+        # Web does override the file defined in basic. Crucially it is
+        # overridden by the "tests" app.
+        content = self.get_rendered_template("someapp/basic_override_me_in_another_app.html")
+        self.assertEqual(content, "app basic overridden in tests web")
 
     @override_settings(LAYERS=BASIC_LAYERS, STATIC_ROOT="/tmp/django-layers/static/basic")
     def test_collectstatic_basic(self):
@@ -247,16 +260,16 @@ class BaseTestCase(TestCase):
 
         management.call_command("collectstatic", interactive=False)
         for name, exists, content in (
-            (("app_bar.css",), True, "app bar basic"),
-            (("app_foo.css",), True, "app foo basic"),
-            (("app_plain.css",), True, "app plain"),
-            (("fs_bar.css",), True, "fs bar basic"),
-            (("fs_basic.css",), True, "fs basic"),
-            (("fs_basic_override_me.css",), True, "fs basic override me"),
-            (("fs_foo.css",), True, "fs foo basic"),
-            (("fs_plain.css",), True, "fs plain"),
-            (("fs_plain_override_me.css",), True, "fs plain override me"),
-            (("fs_web.css",), False, "fs web"),
+            (("someapp/bar.css",), True, "app bar basic"),
+            (("someapp/foo.css",), True, "app foo basic"),
+            (("someapp/plain.css",), True, "app plain"),
+            (("tests/bar.css",), True, "fs bar basic"),
+            (("tests/basic.css",), True, "fs basic"),
+            (("tests/basic_override_me.css",), True, "fs basic override me"),
+            (("tests/foo.css",), True, "fs foo basic"),
+            (("tests/plain.css",), True, "fs plain"),
+            (("tests/plain_override_me.css",), True, "fs plain override me"),
+            (("tests/web.css",), False, "fs web"),
         ):
             pth = os.path.join(settings.STATIC_ROOT, *name)
             self.assertEqual(os.path.exists(pth), exists)
@@ -272,16 +285,16 @@ class BaseTestCase(TestCase):
 
         management.call_command("collectstatic", interactive=False)
         for name, exists, content in (
-            (("app_bar.css",), True, "app bar web"),
-            (("app_foo.css",), True, "app foo basic"),
-            (("app_plain.css",), True, "app plain"),
-            (("fs_bar.css",), True, "fs bar web"),
-            (("fs_basic.css",), True, "fs basic"),
-            (("fs_basic_override_me.css",), True, "fs basic override me web"),
-            (("fs_foo.css",), True, "fs foo basic"),
-            (("fs_plain.css",), True, "fs plain"),
-            (("fs_plain_override_me.css",), True, "fs plain override me web"),
-            (("fs_web.css",), True, "fs web"),
+            (("someapp/bar.css",), True, "app bar web"),
+            (("someapp/foo.css",), True, "app foo basic"),
+            (("someapp/plain.css",), True, "app plain"),
+            (("tests/bar.css",), True, "fs bar web"),
+            (("tests/basic.css",), True, "fs basic"),
+            (("tests/basic_override_me.css",), True, "fs basic override me web"),
+            (("tests/foo.css",), True, "fs foo basic"),
+            (("tests/plain.css",), True, "fs plain"),
+            (("tests/plain_override_me.css",), True, "fs plain override me web"),
+            (("tests/web.css",), True, "fs web"),
         ):
             pth = os.path.join(settings.STATIC_ROOT, *name)
             self.assertEqual(os.path.exists(pth), exists)
