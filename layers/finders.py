@@ -5,6 +5,8 @@ from django.contrib.staticfiles.finders import FileSystemFinder as \
     BaseFileSystemFinder, AppDirectoriesFinder as BaseAppDirectoriesFinder
 from django.conf import settings
 
+from layers import get_layers
+
 
 class FileSystemFinder(BaseFileSystemFinder):
 

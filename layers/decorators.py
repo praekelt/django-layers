@@ -5,16 +5,15 @@ from django.template import RequestContext
 from django.utils.decorators import available_attrs
 from django.conf import settings
 
+from layers import get_current_layer
+
 
 def exclude_from_layers(layers):
 
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
-            try:
-                layer = settings.LAYERS["layers"][-1]
-            except (AttributeError, KeyError):
-                layer = None
+            layer = get_current_layer(request)
 
             # Redirect if view not available in this layer
             if layer and (layer in layers):
