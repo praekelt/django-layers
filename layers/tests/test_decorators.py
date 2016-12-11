@@ -8,6 +8,8 @@ from django.test.client import Client, RequestFactory
 from django.test.utils import override_settings
 from django.conf import settings
 
+from layers import reset
+
 
 BASIC_LAYERS = {"layers": ["basic"]}
 WEB_LAYERS = {"layers": ["basic", "web"]}
@@ -32,6 +34,10 @@ class DecoratorTestCase(TestCase):
         cls.request._path = "/"
         cls.request.get_full_path = lambda: cls.request._path
         cls.client = Client()
+
+    def setUp(self):
+        super(DecoratorTestCase, self).setUp()
+        reset()
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_exclude_from_layers_basic(self):

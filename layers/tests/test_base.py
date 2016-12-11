@@ -13,6 +13,8 @@ from django.test.client import Client, RequestFactory
 from django.test.utils import override_settings
 from django.conf import settings
 
+from layers import reset
+
 
 BASIC_LAYERS = {"layers": ["basic"]}
 WEB_LAYERS = {"layers": ["basic", "web"]}
@@ -34,6 +36,10 @@ class BaseTestCase(TestCase):
         super(BaseTestCase, cls).setUpClass()
         cls.client = Client()
         cls.request = RequestFactory()
+
+    def setUp(self):
+        super(BaseTestCase, self).setUp()
+        reset()
 
     def get_rendered_template(self, template_name):
         template = loader.get_template(template_name)
