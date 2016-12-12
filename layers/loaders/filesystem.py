@@ -6,6 +6,10 @@ from django.utils._os import safe_join
 from django.core.exceptions import SuspiciousFileOperation
 from django.conf import settings
 
+from crum import get_current_request
+
+from layers import get_current_layer_stack
+
 
 class Loader(BaseLoader):
 
@@ -14,7 +18,7 @@ class Loader(BaseLoader):
 
         if not template_dirs:
             template_dirs = self.get_dirs()
-        layers = list(settings.LAYERS["layers"])
+        layers = list(get_current_layer_stack(get_current_request()))
         layers.reverse()
         for template_dir in template_dirs:
             for layer in layers:

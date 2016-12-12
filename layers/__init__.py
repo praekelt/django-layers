@@ -1,3 +1,5 @@
+import types
+
 from django.conf import settings
 
 
@@ -42,21 +44,21 @@ def build_layer_stacks():
     layers = settings.LAYERS.get("layers", [])
     if tree:
         di = {}
-        _build_layer_stacks(node, di)
+        _build_layer_stacks(tree, di)
 
         # Build a dictionary of layer -> parent layers
         for layer in di.keys():
             LAYER_STACKS[layer] = [layer]
             parent = di[layer]
             while parent is not None:
-                LAYER_STACKS[layer].append(parent)
+                LAYER_STACKS[layer].insert(0, parent)
                 parent = di.get(parent, None)
 
     elif layers:
         LAYER_STACKS[layers[-1]] = layers
-    print "XXXXXXXXXXXXXX"
-    print tree
-    print layers
+    print "LAYER STACKS"
+    #print tree
+    #print layers
     print LAYER_STACKS
 
 build_layer_stacks()
@@ -64,6 +66,8 @@ build_layer_stacks()
 
 def get_current_layer(request=None):
     """Return the current layer. The setting, if set, trumps the request."""
+    print "REQUEST?"
+    print request
 
     current = None
     layer_setting = settings.LAYERS

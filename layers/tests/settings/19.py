@@ -22,6 +22,7 @@ INSTALLED_APPS = (
     "layers",
     "layers.tests",
     "layers.tests.someapp",
+    "crum",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sites",
@@ -29,6 +30,11 @@ INSTALLED_APPS = (
 )
 
 SECRET_KEY = "SECRET_KEY"
+
+MIDDLEWARE_CLASSES = (
+    "django.middleware.common.CommonMiddleware",
+    "crum.CurrentRequestUserMiddleware",
+)
 
 # Layers loaders must precede default equivalent loaders
 TEMPLATES = [

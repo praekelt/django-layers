@@ -14,6 +14,7 @@ setup(
     packages = find_packages(),
     install_requires = [
         "django",
+        "django-crum"
     ],
     include_package_data=True,
     tests_require=[
