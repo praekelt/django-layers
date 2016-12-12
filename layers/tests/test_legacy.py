@@ -12,7 +12,8 @@ from django.test.client import RequestFactory
 from django.test.utils import override_settings
 from django.conf import settings
 
-from layers import reset
+from layers import reset_layer_stacks
+from layers.monkey import apply_monkey
 
 
 BASIC_LAYERS = {"layers": ["basic"]}
@@ -28,7 +29,8 @@ class LegacyLayersTestCase(TestCase):
 
     def setUp(self):
         super(LegacyLayersTestCase, self).setUp()
-        reset()
+        reset_layer_stacks()
+        apply_monkey(force=True)
 
     def get_rendered_template(self, template_name):
         template = loader.get_template(template_name)
@@ -301,7 +303,8 @@ class LegacyDecoratorTestCase(TestCase):
 
     def setUp(self):
         super(LegacyDecoratorTestCase, self).setUp()
-        reset()
+        reset_layer_stacks()
+        apply_monkey(force=True)
 
     @override_settings(LAYERS=BASIC_LAYERS)
     def test_exclude_from_layers_basic(self):

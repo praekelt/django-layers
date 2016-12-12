@@ -55,4 +55,3 @@ class AppDirectoriesFinder(BaseAppDirectoriesFinder):
                     filesystem_storage = FileSystemStorage(location=pth)
                     filesystem_storage.prefix = ""
                     self.storages[pth] = filesystem_storage
-        #print self.storages

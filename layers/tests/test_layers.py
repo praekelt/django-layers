@@ -1,4 +1,5 @@
 import os
+from shutil import rmtree
 
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
@@ -14,7 +15,8 @@ from django.conf import settings
 
 from crum import _thread_locals
 
-from layers import reset
+from layers import reset_layer_stacks
+from layers.monkey import apply_monkey
 
 
 BASIC_LAYERS_FROM_SETTINGS = {"tree": ["basic", ["web"]], "current": "basic"}
@@ -32,7 +34,8 @@ class LayerFromSettingsTestCase(TestCase):
 
     def setUp(self):
         super(LayerFromSettingsTestCase, self).setUp()
-        reset()
+        reset_layer_stacks()
+        apply_monkey(force=True)
 
     def get_rendered_template(self, template_name):
         # Check is settings specify a test request header
@@ -261,6 +264,16 @@ class LayerFromSettingsTestCase(TestCase):
         content = self.get_rendered_template("someapp/basic_override_me_in_another_app.html")
         self.assertEqual(content, "app basic overridden in tests web")
 
+
+class CollectStaticTestCase(LayerFromSettingsTestCase):
+
+    def setUp(self):
+        super(CollectStaticTestCase, self).setUp()
+        try:
+            rmtree("/tmp/django-layers")
+        except OSError:
+            pass
+
     @override_settings(LAYERS=BASIC_LAYERS_FROM_SETTINGS, STATIC_ROOT="/tmp/django-layers/static/basic")
     def test_collectstatic_basic(self):
 
@@ -315,6 +328,12 @@ class LayerFromSettingsTestCase(TestCase):
 
 class LayerFromRequestTestCase(LayerFromSettingsTestCase):
 
+    def setUp(self):
+        # Override because no need to force the monkey
+        super(LayerFromRequestTestCase, self).setUp()
+        reset_layer_stacks()
+        apply_monkey()
+
     @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
     def test_fs_plain_template_basic(self):
         super(LayerFromRequestTestCase, self).test_fs_plain_template_basic()
@@ -322,3 +341,147 @@ class LayerFromRequestTestCase(LayerFromSettingsTestCase):
     @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
     def test_fs_plain_template_web(self):
         super(LayerFromRequestTestCase, self).test_fs_plain_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_plain_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_plain_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_plain_template_web(self):
+        super(LayerFromRequestTestCase, self).test_app_plain_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_foo_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_foo_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_foo_template_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_foo_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_foo_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_foo_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_foo_template_web(self):
+        super(LayerFromRequestTestCase, self).test_app_foo_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_bar_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_bar_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_bar_template_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_bar_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_bar_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_bar_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_bar_template_web(self):
+        super(LayerFromRequestTestCase, self).test_app_bar_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_plain_static_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_plain_static_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_plain_static_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_plain_static_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_plain_static_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_plain_static_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_plain_static_web(self):
+        super(LayerFromRequestTestCase, self).test_app_plain_static_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_foo_static_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_foo_static_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_foo_static_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_foo_static_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_foo_static_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_foo_static_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_foo_static_web(self):
+        super(LayerFromRequestTestCase, self).test_app_foo_static_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_bar_static_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_bar_static_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_bar_static_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_bar_static_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_bar_static_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_bar_static_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_bar_static_web(self):
+        super(LayerFromRequestTestCase, self).test_app_bar_static_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_plain_override_me_static_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_plain_override_me_static_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_plain_override_me_static_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_plain_override_me_static_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_basic_override_me_static_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_basic_override_me_static_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_basic_override_me_static_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_basic_override_me_static_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_plain_override_me_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_plain_override_me_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_plain_override_me_template_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_plain_override_me_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_fs_basic_override_me_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_fs_basic_override_me_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_fs_basic_override_me_template_web(self):
+        super(LayerFromRequestTestCase, self).test_fs_basic_override_me_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_plain_override_me_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_plain_override_me_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_plain_override_me_template_web(self):
+        super(LayerFromRequestTestCase, self).test_app_plain_override_me_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_basic_override_me_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_basic_override_me_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_basic_override_me_template_web(self):
+        super(LayerFromRequestTestCase, self).test_app_basic_override_me_template_web()
+
+    @override_settings(LAYERS=BASIC_LAYERS_FROM_REQUEST)
+    def test_app_basic_override_me_in_another_app_template_basic(self):
+        super(LayerFromRequestTestCase, self).test_app_basic_override_me_in_another_app_template_basic()
+
+    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
+    def test_app_basic_override_me_in_another_app_template_web(self):
+        super(LayerFromRequestTestCase, self).test_app_basic_override_me_in_another_app_template_web()
