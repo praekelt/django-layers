@@ -24,7 +24,9 @@ my_get_finder.cache_clear = lambda: True
 
 
 def apply_monkey(force=False):
-    if ("current" in settings.LAYERS) or force:
+    # Monkey need only be applied is layer lookup is from the request
+    if ("current" not in settings.LAYERS) or ("layers" not in settings.LAYERS) \
+        or force:
         logger.info("Patching django.contrib.staticfiles.finders.get_finder")
         finders.get_finder = my_get_finder
 
