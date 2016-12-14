@@ -14,7 +14,7 @@ setup(
         'http://github.com/hedleyroos/django-layers/tarball/develop#egg=django-layers-develop',
     ],
     install_requires = [
-        'Django',
+        'django==1.9.6',
         'django-layers-hr',
     ],
     include_package_data=True,
