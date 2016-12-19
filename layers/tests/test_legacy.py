@@ -5,35 +5,32 @@ from django.core.urlresolvers import reverse
 from django.core import management
 from django.core.files.storage import default_storage
 from django.utils.functional import empty
-from django.utils.module_loading import import_string
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.staticfiles import finders
 from django.test import TestCase
-from django.test.client import Client, RequestFactory
+from django.test.client import RequestFactory
 from django.test.utils import override_settings
 from django.conf import settings
+
+from layers import reset_layer_stacks
+from layers.monkey import apply_monkey
 
 
 BASIC_LAYERS = {"layers": ["basic"]}
 WEB_LAYERS = {"layers": ["basic", "web"]}
 
 
-# Monkey patch function to bypass finders cache. We change settings in each
-# test and these changes influence the finders.
-def my_get_finder(import_path):
-    Finder = import_string(import_path)
-    return Finder()
-my_get_finder.cache_clear = lambda: True
-finders.get_finder = my_get_finder
-
-
-class BaseTestCase(TestCase):
+class LegacyLayersTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        super(BaseTestCase, cls).setUpClass()
-        cls.client = Client()
-        cls.request = RequestFactory()
+        super(LegacyLayersTestCase, cls).setUpClass()
+        cls.request = RequestFactory().get("/")
+
+    def setUp(self):
+        super(LegacyLayersTestCase, self).setUp()
+        reset_layer_stacks()
+        apply_monkey(force=True)
 
     def get_rendered_template(self, template_name):
         template = loader.get_template(template_name)
@@ -300,3 +297,39 @@ class BaseTestCase(TestCase):
             self.assertEqual(os.path.exists(pth), exists)
             if exists:
                 self.assertEqual(open(pth).read().strip(), content)
+
+
+class LegacyDecoratorTestCase(TestCase):
+
+    def setUp(self):
+        super(LegacyDecoratorTestCase, self).setUp()
+        reset_layer_stacks()
+        apply_monkey(force=True)
+
+    @override_settings(LAYERS=BASIC_LAYERS)
+    def test_exclude_from_layers_basic(self):
+        url = reverse("normal-view")
+        response = self.client.get(url)
+        result = response.content
+        self.assertEqual(response.status_code, 200)
+        self.failUnless("This is a normal view" in result)
+
+        url = reverse("web-only-view")
+        response = self.client.get(url)
+        result = response.content
+        self.assertEqual(response.status_code, 200)
+        self.failUnless("is not available for your device" in result)
+
+    @override_settings(LAYERS=WEB_LAYERS)
+    def test_exclude_from_layers_web(self):
+        url = reverse("normal-view")
+        response = self.client.get(url)
+        result = response.content
+        self.assertEqual(response.status_code, 200)
+        self.failUnless("This is a normal view" in result)
+
+        url = reverse("web-only-view")
+        response = self.client.get(url)
+        result = response.content
+        self.assertEqual(response.status_code, 200)
+        self.failUnless("This view is only available for web" in result)

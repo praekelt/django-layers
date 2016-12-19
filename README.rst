@@ -9,7 +9,7 @@ Django Layers
 
 --------------
 
-``django-layers`` makes it possible to serve a set of templates and
+Django Layers makes it possible to serve a set of templates and
 static resources as defined in ``settings.py``. This means you can serve
 different HTML, Javascript and CSS to eg. basic mobile devices, smart
 phones and desktop browsers. These template sets (aka layers) also
@@ -20,7 +20,7 @@ automatically available for desktop browsers as well. You can override
 Installation
 ------------
 
-1. Install or add ``django-layers`` to your Python path.
+1. Install or add ``django-layers-hr`` to your Python path.
 2. Add ``layers`` after ``django.contrib.static`` to your ``INSTALLED_APPS`` setting.
 3. Ensure the app that you will be creating layers for appears first in
    ``INSTALLED_APPS`` else template override won't work.
@@ -60,13 +60,31 @@ Directory structure
 Settings
 ^^^^^^^^
 
-We define an "inheritance" hierarchy.
+We define an "inheritance" hierarchy using a list-of-lists notation.
+
+Two lines of inheritance: basic-smart and basic-web::
+
+    LAYERS = {'tree': ['basic', ['smart'], ['web']]}
+
+One lines of inheritance: basic-smart-web.::
+
+    LAYERS = {'tree': ['basic', ['smart', ['web']]]}
+
+There are two ways to configure layer lookup for system: specify the current
+layer in a settings file or look it up from the request. Omit the ``current``
+key to enable request based lookups::
+
+    LAYERS = {'tree': ['basic', ['smart'], ['web']], 'current': 'web'}
+
+Legacy settings require layers to be defined in separate settings files. The example
+below means we have three settings files, and thus three Django processes.
+Please migrate to the default ``tree`` format.
 
 -  Desktop settings has ``LAYERS = {'layers': ['basic', 'web']}``.
 -  Basic settings has ``LAYERS = {'layers': ['basic']}``.
 -  Smart settings has ``LAYERS = {'layers': ['basic', 'smart']}``.
 
-All settings require loaders and finders to be set. The order is
+Add the loaders and finders to settings. The order is
 important.
 
 ::
@@ -139,6 +157,28 @@ decorator ``exclude_from_layers`` is provided that renders a friendly page inste
         @exclude_from_layers(layers=("basic",))
         def get(self, *args, **kwargs):
             return super(WebOnlyView, self).get(*args, **kwargs)
+
+Request based layer lookup
+--------------------------
+The preferred way of layer lookup is through the presense of an
+``X-Django-Layer`` header in the request. Django Layers layer lookup is very
+similar to the site object lookup done in ``django.contrib.sites``. If a layer
+is explicitly defined in settings then that is used, else the request headers
+are inspected.
+
+During development you will likely define the layer in your settings file, but
+in a production environment you don't want a Django process per layer, so
+request based lookups are preferred.
+
+Layer objects
+-------------
+The management command `load_layers` creates a `Layer` object for each layer in
+your project. It is useful for doing layer based filtering at database level.
+
+Can I add my own layers?
+------------------------
+Yes! Basic, smart and web are just exmaples. You can define any hierarchy with
+any names.
 
 Authors
 -------

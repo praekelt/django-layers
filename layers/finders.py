@@ -5,6 +5,10 @@ from django.contrib.staticfiles.finders import FileSystemFinder as \
     BaseFileSystemFinder, AppDirectoriesFinder as BaseAppDirectoriesFinder
 from django.conf import settings
 
+from crum import get_current_request
+
+from layers import get_current_layer_stack
+
 
 class FileSystemFinder(BaseFileSystemFinder):
 
@@ -12,7 +16,7 @@ class FileSystemFinder(BaseFileSystemFinder):
         super(FileSystemFinder, self).__init__(apps, *args, **kwargs)
 
         # Extend locations
-        layers = list(settings.LAYERS['layers'])
+        layers = list(get_current_layer_stack(get_current_request()))
         layers.reverse()
         processed = []
         new_locations = []
@@ -37,7 +41,7 @@ class AppDirectoriesFinder(BaseAppDirectoriesFinder):
         super(AppDirectoriesFinder, self).__init__(apps, *args, **kwargs)
 
         # Extends apps, add to storages
-        layers = list(settings.LAYERS['layers'])
+        layers = list(get_current_layer_stack(get_current_request()))
         layers.reverse()
         processed = []
         for k, v in self.storages.items():
@@ -49,5 +53,5 @@ class AppDirectoriesFinder(BaseAppDirectoriesFinder):
                     # attaches no app specific logic to it so it is safe.
                     self.apps.append(pth)
                     filesystem_storage = FileSystemStorage(location=pth)
-                    filesystem_storage.prefix = ''
+                    filesystem_storage.prefix = ""
                     self.storages[pth] = filesystem_storage
