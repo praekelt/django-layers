@@ -1,6 +1,6 @@
 ## Changelog
 
-#### next
+#### 1.10.0.0
 1. Django 1.10 compatibility.
 2. Make it possible to determine the layer from the request. This removes the need for a Django process per layer.
 
