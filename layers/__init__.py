@@ -58,6 +58,11 @@ def build_layer_stacks():
         LAYER_STACKS[layers[-1]] = layers
 
 
+def get_layer_stacks():
+    global LAYER_STACKS
+    return LAYER_STACKS
+
+
 def get_current_layer(request=None):
     """Return the current layer. The setting, if set, trumps the request."""
 
