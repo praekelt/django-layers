@@ -170,11 +170,15 @@ During development you will likely define the layer in your settings file, but
 in a production environment you don't want a Django process per layer, so
 request based lookups are preferred.
 
+Layer objects
+-------------
+The management command `load_layers` creates a `Layer` object for each layer in
+your project. It is useful for doing layer based filtering at database level.
+
 Can I add my own layers?
 ------------------------
 Yes! Basic, smart and web are just exmaples. You can define any hierarchy with
 any names.
-
 
 Authors
 -------

@@ -1,7 +1,6 @@
 import types
 
 from django.conf import settings
-from django.core.exceptions import AppRegistryNotReady
 
 
 default_app_config = "layers.apps.LayersConfig"
@@ -57,18 +56,6 @@ def build_layer_stacks():
     elif layers:
         LAYER_STACKS[layers[-1]] = layers
 
-    # Create database entries transparently. We eschew a management command but
-    # that requires handling a once-off edge case.
-    try:
-        from layers.models import Layer
-    except AppRegistryNotReady:
-        pass
-    else:
-        for layers in LAYER_STACKS.values():
-            for layer in layers:
-                Layer.objects.get_or_create(name=layer)
-build_layer_stacks()
-
 
 def get_current_layer(request=None):
     """Return the current layer. The setting, if set, trumps the request."""
@@ -95,3 +82,6 @@ def get_current_layer_stack(request=None):
 def reset_layer_stacks():
     global LAYER_STACKS
     LAYER_STACKS = {}
+
+
+build_layer_stacks()

@@ -15,8 +15,7 @@ from django.conf import settings
 
 from crum import _thread_locals
 
-from layers import reset_layer_stacks, build_layer_stacks
-from layers.models import Layer
+from layers import reset_layer_stacks
 from layers.monkey import apply_monkey
 
 
@@ -265,14 +264,6 @@ class LayerFromSettingsTestCase(TestCase):
         content = self.get_rendered_template("someapp/basic_override_me_in_another_app.html")
         self.assertEqual(content, "app basic overridden in tests web")
 
-    @override_settings(LAYERS=WEB_LAYERS_FROM_SETTINGS)
-    def test_layer_objects(self):
-        # Each test runs in a transaction so the layer objects are continually
-        # cleared. Invoke build_layer_stacks manually.
-        build_layer_stacks()
-        layers = [o.name for o in Layer.objects.all().order_by("name")]
-        self.assertEqual(layers, ["basic", "web"])
-
 
 class CollectStaticTestCase(LayerFromSettingsTestCase):
 
@@ -493,7 +484,3 @@ class LayerFromRequestTestCase(LayerFromSettingsTestCase):
     @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
     def test_app_basic_override_me_in_another_app_template_web(self):
         super(LayerFromRequestTestCase, self).test_app_basic_override_me_in_another_app_template_web()
-
-    @override_settings(LAYERS=WEB_LAYERS_FROM_REQUEST)
-    def test_layer_objects(self):
-        super(LayerFromRequestTestCase, self).test_layer_objects()
