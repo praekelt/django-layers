@@ -39,8 +39,9 @@ def build_layer_stacks():
     """
 
     global LAYER_STACKS
-    tree = settings.LAYERS.get("tree", [])
-    layers = settings.LAYERS.get("layers", [])
+    setting = getattr(settings, "LAYERS", {})
+    tree = setting.get("tree", [])
+    layers = setting.get("layers", [])
     if tree:
         di = {}
         _build_layer_stacks(tree, di)
@@ -61,11 +62,11 @@ def get_current_layer(request=None):
     """Return the current layer. The setting, if set, trumps the request."""
 
     current = None
-    layer_setting = settings.LAYERS
-    if "current" in layer_setting:
-        current = layer_setting["current"]
-    elif "layers" in layer_setting:
-        current = layer_setting["layers"][-1]
+    setting = getattr(settings, "LAYERS", {})
+    if "current" in setting:
+        current = setting["current"]
+    elif "layers" in setting:
+        current = setting["layers"][-1]
     elif request is not None:
         current = request.META.get("X-Django-Layer", None)
     return current
