@@ -4,6 +4,7 @@ Changelog
 next
 ----
 #. Fix typos in documentation.
+#. Add `layers_collectstatic` management command to do layer aware static file collection.
 
 
 1.10.0
