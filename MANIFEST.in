@@ -1,7 +1,7 @@
 # Ex
 include README.rst
-include README.md
-include AUTHORS.md
-include CHANGELOG.md
+include README.rst
+include AUTHORS.rst
+include CHANGELOG.rst
 include LICENSE
 recursive-include layers *
