@@ -1,8 +1,8 @@
 Changelog
 =========
 
-next
-----
+1.10.1
+------
 #. Fix typos in documentation.
 #. Add `layers_collectstatic` management command to do layer aware static file collection.
 
