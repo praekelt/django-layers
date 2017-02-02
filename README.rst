@@ -177,7 +177,7 @@ your project. It is useful for doing layer based filtering at database level.
 
 Can I add my own layers?
 ------------------------
-Yes! Basic, smart and web are just exmaples. You can define any hierarchy with
+Yes! Basic, smart and web are just examples. You can define any hierarchy with
 any names.
 
 Authors
