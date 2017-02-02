@@ -4,5 +4,4 @@ include README.md
 include AUTHORS.md
 include CHANGELOG.md
 include LICENSE
-include test_settings.py
 recursive-include layers *

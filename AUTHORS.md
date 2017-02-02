@@ -1,3 +1,0 @@
-## Authors
-* Hedley Roos
-
