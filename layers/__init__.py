@@ -1,5 +1,3 @@
-import types
-
 from django.conf import settings
 
 
