@@ -50,7 +50,7 @@ class LayerFromSettingsTestCase(TestCase):
         _thread_locals.request = request
 
         template = loader.get_template(template_name)
-        return template.render(RequestContext(request)).strip()
+        return template.render(RequestContext(request).flatten()).strip()
 
     def get_rendered_static(self, static_name):
         absolute_path = finders.find(static_name)

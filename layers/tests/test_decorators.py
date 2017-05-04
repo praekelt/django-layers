@@ -25,13 +25,13 @@ class DecoratorFromSettingsTestCase(TestCase):
     def test_exclude_from_layers_basic(self):
         url = reverse("normal-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("is not available for your device" in result)
 
@@ -39,13 +39,13 @@ class DecoratorFromSettingsTestCase(TestCase):
     def test_exclude_from_layers_web(self):
         url = reverse("normal-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This view is only available for web" in result)
 
@@ -61,13 +61,13 @@ class DecoratorFromRequestTestCase(TestCase):
     def test_exclude_from_layers_basic(self):
         url = reverse("normal-view")
         response = self.client.get(url, **{"X-Django-Layer": "basic"})
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url, **{"X-Django-Layer": "basic"})
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("is not available for your device" in result)
 
@@ -75,12 +75,12 @@ class DecoratorFromRequestTestCase(TestCase):
     def test_exclude_from_layers_web(self):
         url = reverse("normal-view")
         response = self.client.get(url, **{"X-Django-Layer": "web"})
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url, **{"X-Django-Layer": "web"})
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This view is only available for web" in result)
