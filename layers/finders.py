@@ -44,7 +44,7 @@ class AppDirectoriesFinder(BaseAppDirectoriesFinder):
         layers = list(get_current_layer_stack(get_current_request()))
         layers.reverse()
         processed = []
-        for k, v in self.storages.items():
+        for k, v in list(self.storages.items()):
             for layer in layers:
                 pth = os.path.join(v.location, layer)
                 if os.path.exists(pth) and (pth not in processed):

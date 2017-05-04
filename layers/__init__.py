@@ -10,15 +10,15 @@ LAYER_STACKS = {}
 def _build_layer_stacks(node, di, parent=None, depth=0):
     """Recursive helper to map each tree node to its parent."""
 
-    if isinstance(node, types.ListType):
+    if isinstance(node, list):
         for child in node:
-            if isinstance(child, types.ListType):
+            if isinstance(child, list):
                 _build_layer_stacks(child, di, node[0], depth+1)
             else:
                 _build_layer_stacks(child, di, parent, depth+1)
     else:
         if node in di:
-            raise RuntimeError, "Node %s is already in the tree" % node
+            raise RuntimeError("Node %s is already in the tree" % node)
         di[node] = parent
 
 

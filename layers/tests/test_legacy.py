@@ -34,7 +34,7 @@ class LegacyLayersTestCase(TestCase):
 
     def get_rendered_template(self, template_name):
         template = loader.get_template(template_name)
-        return template.render(RequestContext(self.request)).strip()
+        return template.render(RequestContext(self.request).flatten()).strip()
 
     def get_rendered_static(self, static_name):
         absolute_path = finders.find(static_name)
@@ -312,13 +312,13 @@ class LegacyDecoratorTestCase(TestCase):
         response = self.client.get(url)
         result = response.content
         self.assertEqual(response.status_code, 200)
-        self.failUnless("This is a normal view" in result)
+        self.failUnless(str.encode("This is a normal view") in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url)
         result = response.content
         self.assertEqual(response.status_code, 200)
-        self.failUnless("is not available for your device" in result)
+        self.failUnless(str.encode("is not available for your device") in result)
 
     @override_settings(LAYERS=WEB_LAYERS)
     def test_exclude_from_layers_web(self):
@@ -326,10 +326,10 @@ class LegacyDecoratorTestCase(TestCase):
         response = self.client.get(url)
         result = response.content
         self.assertEqual(response.status_code, 200)
-        self.failUnless("This is a normal view" in result)
+        self.failUnless(str.encode("This is a normal view") in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url)
         result = response.content
         self.assertEqual(response.status_code, 200)
-        self.failUnless("This view is only available for web" in result)
+        self.failUnless(str.encode("This view is only available for web") in result)
