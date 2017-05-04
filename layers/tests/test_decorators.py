@@ -25,29 +25,29 @@ class DecoratorFromSettingsTestCase(TestCase):
     def test_exclude_from_layers_basic(self):
         url = reverse("normal-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
-        self.failUnless(str.encode("This is a normal view") in result)
+        self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
-        self.failUnless(str.encode("is not available for your device") in result)
+        self.failUnless("is not available for your device" in result)
 
     @override_settings(LAYERS=WEB_LAYERS_)
     def test_exclude_from_layers_web(self):
         url = reverse("normal-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
-        self.failUnless(str.encode("This is a normal view") in result)
+        self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
-        self.failUnless(str.encode("This view is only available for web") in result)
+        self.failUnless("This view is only available for web" in result)
 
 
 class DecoratorFromRequestTestCase(TestCase):
@@ -61,26 +61,26 @@ class DecoratorFromRequestTestCase(TestCase):
     def test_exclude_from_layers_basic(self):
         url = reverse("normal-view")
         response = self.client.get(url, **{"X-Django-Layer": "basic"})
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
-        self.failUnless(str.encode("This is a normal view") in result)
+        self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url, **{"X-Django-Layer": "basic"})
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
-        self.failUnless(str.encode("is not available for your device") in result)
+        self.failUnless("is not available for your device" in result)
 
     @override_settings(LAYERS=WEB_LAYERS_)
     def test_exclude_from_layers_web(self):
         url = reverse("normal-view")
         response = self.client.get(url, **{"X-Django-Layer": "web"})
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
-        self.failUnless(str.encode("This is a normal view") in result)
+        self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url, **{"X-Django-Layer": "web"})
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
-        self.failUnless(str.encode("This view is only available for web") in result)
+        self.failUnless("This view is only available for web" in result)
