@@ -34,7 +34,7 @@ class LegacyLayersTestCase(TestCase):
 
     def get_rendered_template(self, template_name):
         template = loader.get_template(template_name)
-        return template.render(RequestContext(self.request)).strip()
+        return template.render(RequestContext(self.request).flatten()).strip()
 
     def get_rendered_static(self, static_name):
         absolute_path = finders.find(static_name)
@@ -310,13 +310,13 @@ class LegacyDecoratorTestCase(TestCase):
     def test_exclude_from_layers_basic(self):
         url = reverse("normal-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("is not available for your device" in result)
 
@@ -324,12 +324,12 @@ class LegacyDecoratorTestCase(TestCase):
     def test_exclude_from_layers_web(self):
         url = reverse("normal-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This is a normal view" in result)
 
         url = reverse("web-only-view")
         response = self.client.get(url)
-        result = response.content
+        result = response.content.decode()
         self.assertEqual(response.status_code, 200)
         self.failUnless("This view is only available for web" in result)
