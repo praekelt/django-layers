@@ -180,21 +180,3 @@ Can I add my own layers?
 Yes! Basic, smart and web are just examples. You can define any hierarchy with
 any names.
 
-Authors
--------
-
--  Hedley Roos
-
-Changelog
----------
-
-0.2
-^^^
-
-1. Inevitable package rename.
-
-0.1
-^^^
-
-1. Initial release.
-
