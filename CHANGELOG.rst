@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.1
+------
+#. Guard against KeyError, when request is empty in get_current_layer_stack().
+
 1.11.0
 ------
 #. Django 1.11 compatibility.

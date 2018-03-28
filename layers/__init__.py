@@ -80,7 +80,7 @@ def get_current_layer_stack(request=None):
     if not LAYER_STACKS:
         build_layer_stacks()
     current = get_current_layer(request)
-    return LAYER_STACKS[current]
+    return LAYER_STACKS.get(current, [])
 
 
 def reset_layer_stacks():
