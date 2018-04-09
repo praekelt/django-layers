@@ -1,7 +1,10 @@
 import os
 
 from django.template import RequestContext, loader
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except ImportError:
+    from django.core.urlresolvers import reverse
 from django.core import management
 from django.core.files.storage import default_storage
 from django.utils.functional import empty

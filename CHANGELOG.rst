@@ -1,6 +1,10 @@
 Changelog
 =========
 
+next
+----
+#. Add tests to confirm Django 2.0 works.
+
 1.11.1
 ------
 #. Guard against KeyError, when request is empty in get_current_layer_stack().
